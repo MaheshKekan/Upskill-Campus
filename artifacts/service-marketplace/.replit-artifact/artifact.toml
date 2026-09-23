@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Service marketplace"
+description = "A multi-tenant services marketplace where merchants create storefronts, customers discover local services, and both sides manage purchases, appointments, and reviews."
+version = "1.0.0"
+id = "artifacts/service-marketplace"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25067
+
+[services.development]
+run = "pnpm --filter @workspace/service-marketplace run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/service-marketplace", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/service-marketplace/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25067"
+BASE_PATH = "/"
